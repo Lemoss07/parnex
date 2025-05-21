@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diário da Saúde Infantil - Bem-Estar Infantil</title>
+  <style>
+    :root {
+      --primary-color: #87CEEB;
+      --background-color: #242424;
+      --text-color: #ffffff;
+      --accent-color: #6fff57;
+      --card-bg: #333333;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .app-name {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .back-button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    /* Page Title */
+    .page-title {
+      color: var(--primary-color);
+      text-align: center;
+      margin: 30px 0;
+      font-size: 2rem;
+    }
+    
+    /* Health Journal */
+    .health-journal {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px;
+    }
+    
+    /* Form Section */
+    .journal-form {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .form-title {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      color: var(--text-color);
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+    
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      background-color: #444;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      border: none;
+      border-radius: 5px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    .btn:hover {
+      background-color: #6db9d1;
+    }
+    
+    /* History Section */
+    .journal-history {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .history-title {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+    
+    .history-filters {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .history-filters select {
+      flex: 1;
+    }
+    
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .history-table th, .history-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #555;
+    }
+    
+    .history-table th {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .history-table tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Charts */
+    .charts-section {
+      margin-top: 30px;
+    }
+    
+    .charts-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    
+    .chart {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      height: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .chart-title {
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    
+    .chart-placeholder {
+      flex: 1;
+      background-color: rgba(135, 206, 235, 0.1);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .health-journal {
+        grid-template-columns: 1fr;
+      }
+      
+      .charts-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .history-filters {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="imagem/logo.jpeg" alt="Logo do Bem-Estar Infantil" class="logo">
+      <div class="app-name">Bem-Estar Infantil</div>
+    </div>
+    <button class="back-button" onclick="window.location.href='index.html'">← Voltar</button>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Diário da Saúde Infantil</h1>
+    
+    <div class="health-journal">
+      <!-- Formulário para registro de dados -->
+      <div class="journal-form">
+        <h2 class="form-title">Registrar Novo Dado</h2>
+        
+        <form id="healthForm">
+          <div class="form-group">
+            <label for="childSelect">Criança:</label>
+            <select id="childSelect" required>
+              <option value="1">Lucas Silva (5 anos)</option>
+              <option value="2">Maria Silva (3 anos)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="recordDate">Data do Registro:</label>
+            <input type="date" id="recordDate" required value="2025-04-25">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="weight">Peso (kg):</label>
+              <input type="number" id="weight" step="0.1" placeholder="Ex: 19.5">
+            </div>
+            
+            <div class="form-group">
+              <label for="height">Altura (cm):</label>
+              <input type="number" id="height" step="0.1" placeholder="Ex: 110.5">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="temperature">Temperatura (°C):</label>
+              <input type="number" id="temperature" step="0.1" placeholder="Ex: 36.5">
+            </div>
+            
+            <div class="form-group">
+              <label for="recordType">Tipo de Registro:</label>
+              <select id="recordType">
+                <option value="routine">Rotina</option>
+                <option value="illness">Doença</option>
+                <option value="checkup">Consulta Médica</option>
+                <option value="vaccine">Vacinação</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="symptoms">Sintomas ou Observações:</label>
+            <textarea id="symptoms" rows="4" placeholder="Descreva sintomas ou observações relevantes"></textarea>
+          </div>
+          
+          <button type="submit" class="btn">Salvar Registro</button>
+        </form>
+      </div>
+      
+      <!-- Histórico de registros -->
+      <div class="journal-history">
+        <h2 class="history-title">Histórico de Registros</h2>
+        
+        <div class="history-filters">
+          <select id="filterChild">
+            <option value="all">Todas as Crianças</option>
+            <option value="1" selected>Lucas Silva</option>
+            <option value="2">Maria Silva</option>
+          </select>
+          
+          <select id="filterType">
+            <option value="all">Todos os Tipos</option>
+            <option value="routine">Rotina</option>
+            <option value="illness">Doença</option>
+            <option value="checkup">Consulta Médica</option>
+            <option value="vaccine">Vacinação</option>
+          </select>
+          
+          <select id="filterPeriod">
+            <option value="30">Últimos 30 dias</option>
+            <option value="90">Últimos 3 meses</option>
+            <option value="180">Últimos 6 meses</option>
+            <option value="365">Último ano</option>
+            <option value="all">Todo o histórico</option>
+          </select>
+        </div>
+        
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Peso</th>
+              <th>Altura</th>
+              <th>Temperatura</th>
+              <th>Observações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>25/04/2025</td>
+              <td>Rotina</td>
+              <td>19.0 kg</td>
+              <td>110 cm</td>
+              <td>36.5°C</td>
+              <td>Desenvolvimento normal</td>
+            </tr>
+            <tr>
+              <td>10/04/2025</td>
+              <td>Consulta Médica</td>
+              <td>18.8 kg</td>
+              <td>109 cm</td>
+              <td>36.6°C</td>
+              <td>Check-up de rotina</td>
+            </tr>
+            <tr>
+              <td>25/03/2025</td>
+              <td>Doença</td>
+              <td>18.5 kg</td>
+              <td>109 cm</td>
+              <td>37.8°C</td>
+              <td>Resfriado, tosse leve</td>
+            </tr>
+            <tr>
+              <td>15/03/2025</td>
+              <td>Vacinação</td>
+              <td>18.5 kg</td>
+              <td>108 cm</td>
+              <td>36.5°C</td>
+              <td>Vacina contra Influenza</td>
+            </tr>
+            <tr>
+              <td>25/02/2025</td>
+              <td>Rotina</td>
+              <td>18.2 kg</td>
+              <td>108 cm</td>
+              <td>36.4°C</td>
+              <td>Desenvolvimento normal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Seção de gráficos -->
+    <div class="charts-section">
+      <h2 class="section-title">Gráficos de Acompanhamento</h2>
+      
+      <div class="charts-container">
+        <div class="chart">
+          <h3 class="chart-title">Evolução do Peso</h3>
+          <div class="chart-placeholder">Gráfico de evolução do peso ao longo do tempo</div>
+        </div>
+        
+        <div class="chart">
+          <h3 class="chart-title">Evolução da Altura</h3>
+          <div class="chart-placeholder">Gráfico de evolução da altura ao longo do tempo</div>
+        </div>
+        
+        <div class="chart">
+          <h3 class="chart-title">Temperatura Corporal</h3>
+          <div class="chart-placeholder">Gráfico de variação da temperatura corporal</div>
+        </div>
+        
+        <div class="chart">
+          <h3 class="chart-title">IMC (Índice de Massa Corporal)</h3>
+          <div class="chart-placeholder">Gráfico de evolução do IMC ao longo do tempo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2025 Bem-Estar Infantil • Cuidar e Crescer</p>
+  </footer>
+
+  <script>
+    // Script para manipulação do formulário
+    document.getElementById('healthForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Aqui seria implementada a lógica para salvar os dados
+      alert('Registro salvo com sucesso!');
+      
+      // Limpar campos do formulário
+      document.getElementById('weight').value = '';
+      document.getElementById('height').value = '';
+      document.getElementById('temperature').value = '';
+      document.getElementById('symptoms').value = '';
+    });
+  </script>
+</body>
+</html>

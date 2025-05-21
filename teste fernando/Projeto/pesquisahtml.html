@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Ultra - Assistente de IA Premium</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cores principais - Tema escuro */
+            --bg-gradient-dark: linear-gradient(135deg, #0f172a 0%, #6db9d1 100%);
+            --surface-dark: rgba(30, 41, 59, 0.7);
+            --surface-dark-solid: #6db9d1;
+            --card-dark: rgba(15, 23, 42, 0.6);
+            --card-dark-hover: rgba(30, 41, 59, 0.8);
+            --border-dark: rgba(148, 163, 184, 0.1);
+            --text-primary-dark: #f8fafc;
+            --text-secondary-dark: #cbd5e1;
+            --text-tertiary-dark: #6db9d1;
+            
+            /* Cores principais - Tema claro */
+            --bg-gradient-light: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --surface-light: rgba(255, 255, 255, 0.7);
+            --surface-light-solid: #ffffff;
+            --card-light: rgba(255, 255, 255, 0.8);
+            --card-light-hover: rgba(255, 255, 255, 0.95);
+            --border-light: rgba(148, 163, 184, 0.2);
+            --text-primary-light: #0f172a;
+            --text-secondary-light: #6db9d1;
+            --text-tertiary-light: #64748b;
+            
+            /* Cores de destaque */
+            --primary: #6db9d1;
+            --primary-light: #6db9d1;
+            --primary-dark: #6db9d1;
+            --primary-gradient: linear-gradient(135deg, #6db9d1 0%, #6db9d1 100%);
+            --secondary: #ec4899;
+            --secondary-light: #f472b6;
+            --secondary-dark: #db2777;
+            --secondary-gradient: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --accent-dark: #059669;
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            
+            /* Cores de status */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --info: #6db9d1;
+            
+            /* Efeitos */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            
+            /* Glassmorphism */
+            --glass-blur: blur(16px);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            
+            /* Animações */
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Layout */
+            --border-radius-sm: 0.375rem;
+            --border-radius: 0.5rem;
+            --border-radius-md: 0.75rem;
+            --border-radius-lg: 1rem;
+            --border-radius-xl: 1.5rem;
+            --border-radius-full: 9999px;
+            
+            /* Z-index */
+            --z-dropdown: 1000;
+            --z-sticky: 1020;
+            --z-fixed: 1030;
+            --z-modal-backdrop: 1040;
+            --z-modal: 1050;
+            --z-popover: 1060;
+            --z-tooltip: 1070;
+        }
+
+        /* Reset e estilos base */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient-dark);
+            color: var(--text-primary-dark);
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background var(--transition);
+        }
+
+        body.light-theme {
+            background: var(--bg-gradient-light);
+            color: var(--text-primary-light);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--primary-light);
+        }
+
+        button {
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Layout principal */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Header */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            background: var(--surface-dark);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        body.light-theme .app-header {
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #a5b4fc 0%, #6db9d1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-theme .logo-text {
+            background: linear-gradient(135deg, #6db9d1 0%, #6db9d1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .header-button {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-dark);
+            color: var(--text-secondary-dark);
+            border: none;
+            border-radius: var(--border-radius);
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+            z-index: 0;
+        }
+
+        .header-button:hover::before {
+            opacity: 0.1;
+        }
+
+        .header-button i {
+            position: relative;
+            z-index: 1;
+        }
+
+        body.light-theme .header-button {
+            background: var(--card-light);
+            color: var(--text-secondary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Main content */
+        .app-main {
+            display: flex;
+            gap: 1.5rem;
+            flex-grow: 1;
+        }
+
+        /* Chat container */
+        .chat-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-dark);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition);
+        }
+
+        body.light-theme .chat-container {
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-dark);
+            transition: border-color var(--transition);
+        }
+
+        body.light-theme .chat-header {
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .chat-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--accent);
+        }
+
+        .status-indicator {
+            position: relative;
+            width: 0.75rem;
+            height: 0.75rem;
+        }
+
+        .status-dot {
+            position: absolute;
+            width: 0.75rem;
+            height: 0.75rem;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+            70% {
+                transform: scale(2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            max-width: 85%;
+            animation: messageAppear 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .avatar.ai {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .avatar.user {
+            background: var(--secondary-gradient);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .message-bubble {
+            padding: 1rem 1.25rem;
+            border-radius: var(--border-radius-lg);
+            position: relative;
+            max-width: calc(100% - 3.5rem);
+        }
+
+        .message.ai .message-bubble {
+            background: var(--card-dark);
+            color: var(--text-primary-dark);
+            border-top-left-radius: 0.25rem;
+        }
+
+        .message.user .message-bubble {
+            background: var(--primary-gradient);
+            color: white;
+            border-top-right-radius: 0.25rem;
+        }
+
+        body.light-theme .message.ai .message-bubble {
+            background: var(--card-light);
+            color: var(--text-primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .message-time {
+            font-weight: 500;
+        }
+
+        .message-status {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .typing-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: var(--text-primary-dark);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        body.light-theme .typing-dot {
+            background-color: var(--text-primary-light);
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .chat-input-container {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-dark);
+            transition: border-color var(--transition);
+        }
+
+        body.light-theme .chat-input-container {
+            border-top: 1px solid var(--border-light);
+        }
+
+        .chat-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.75rem;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 1rem 3.5rem 1rem 1.25rem;
+            background: var(--card-dark);
+            color: var(--text-primary-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--border-radius-lg);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            transition: all var(--transition-fast);
+            min-height: 3.5rem;
+            max-height: 10rem;
+            overflow-y: auto;
+        }
+
+        body.light-theme .chat-input {
+            background: var(--card-light);
+            color: var(--text-primary-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px  #6db9d1(99, 102, 241, 0.2);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-tertiary-dark);
+        }
+
+        body.light-theme .chat-input::placeholder {
+            color: var(--text-tertiary-light);
+        }
+
+        .send-button {
+            position: absolute;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-full);
+            transition: all var(--transition-fast);
+            box-shadow: var(--shadow);
+        }
+
+        .send-button:hover {
+            transform: scale(1.05);
+        }
+
+        .send-button:disabled {
+            background: linear-gradient(135deg, #6db9d1 0%, #6db9d1 100%);
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .suggestion {
+            padding: 0.625rem 1rem;
+            background: var(--card-dark);
+            color: var(--text-secondary-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--border-radius-full);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        body.light-theme .suggestion {
+            background: var(--card-light);
+            color: var(--text-secondary-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .suggestion:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 20rem;
+            background: var(--surface-dark);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-lg);
+        }
+
+        body.light-theme .sidebar {
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary-dark);
+        }
+
+        body.light-theme .sidebar-title {
+            color: var(--text-primary-light);
+        }
+
+        .model-select-wrapper {
+            position: relative;
+        }
+
+        .model-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-right: 2.5rem;
+            background: var(--card-dark);
+            color: var(--text-primary-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--border-radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        body.light-theme .model-select {
+            background: var(--card-light);
+            color: var(--text-primary-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .model-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-tertiary-dark);
+        }
+
+        body.light-theme .select-arrow {
+            color: var(--text-tertiary-light);
+        }
+
+        .feature-card {
+            padding: 1rem;
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        body.light-theme .feature-card {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: var(--border-radius);
+            font-size: 1.125rem;
+        }
+
+        .feature-content {
+            flex-grow: 1;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-description {
+            font-size: 0.75rem;
+            color: var(--text-tertiary-dark);
+            line-height: 1.4;
+        }
+
+        body.light-theme .feature-description {
+            color: var(--text-tertiary-light);
+        }
+
+        .conversation-card {
+            padding: 0.75rem 1rem;
+            background: var(--card-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        body.light-theme .conversation-card {
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .conversation-card:hover {
+            background: var(--card-dark-hover);
+            border-color: var(--primary);
+        }
+
+        body.light-theme .conversation-card:hover {
+            background: var(--card-light-hover);
+        }
+
+        .conversation-icon {
+            color: var(--text-tertiary-dark);
+            font-size: 1rem;
+        }
+
+        body.light-theme .conversation-icon {
+            color: var(--text-tertiary-light);
+        }
+
+        .conversation-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+
+        .conversation-time {
+            font-size: 0.75rem;
+            color: var(--text-tertiary-dark);
+        }
+
+        body.light-theme .conversation-time {
+            color: var(--text-tertiary-light);
+        }
+
+        /* Footer */
+        .app-footer {
+            margin-top: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--surface-dark);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-tertiary-dark);
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        body.light-theme .app-footer {
+            background: var(--surface-light);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-tertiary-light);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-tertiary-dark);
+            transition: color var(--transition-fast);
+        }
+
+        body.light-theme .footer-link {
+            color: var(--text-tertiary-light);
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 0.375rem;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius-full);
+        }
+
+        body.light-theme ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        body.light-theme ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .app-container {
+                padding: 1rem;
+            }
+            
+            .app-main {
+                gap: 1rem;
+            }
+            
+            .sidebar {
+                width: 18rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .app-main {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .feature-cards {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-header {
+                padding: 0.75rem 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.25rem;
+            }
+            
+            .chat-messages {
+                padding: 1rem;
+            }
+            
+            .message {
+                max-width: 95%;
+            }
+            
+            .chat-input-container {
+                padding: 1rem;
+            }
+            
+            .suggestions {
+                gap: 0.5rem;
+            }
+            
+            .suggestion {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+            }
+            
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .app-container {
+                padding: 0.75rem;
+            }
+            
+            .app-header {
+                margin-bottom: 0.75rem;
+            }
+            
+            .header-actions {
+                gap: 0.5rem;
+            }
+            
+            .logo-icon {
+                width: 2rem;
+                height: 2rem;
+                font-size: 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.125rem;
+            }
+            
+            .message {
+                gap: 0.75rem;
+            }
+            
+            .avatar {
+                width: 2rem;
+                height: 2rem;
+                font-size: 1rem;
+            }
+            
+            .message-bubble {
+                padding: 0.75rem 1rem;
+            }
+            
+            .message-text {
+                font-size: 0.9375rem;
+            }
+            
+            .app-footer {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+                padding: 0.75rem;
+            }
+            
+            .footer-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">GPT Ultra</div>
+            </div>
+            <div class="header-actions">
+                <button class="header-button" id="clearBtn" title="Limpar conversa">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="header-button" id="themeToggle" title="Alternar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">Nova Conversa</div>
+                    <div class="chat-status">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                        </div>
+                        <span>Online</span>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="avatar ai">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="message-bubble">
+                            <div class="message-text">
+                                Olá! Sou o GPT Ultra, seu assistente de IA avançado. Como posso ajudar você hoje?
+                            </div>
+                            <div class="message-meta">
+                                <div class="message-time">Agora</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <div class="chat-input-wrapper">
+                        <textarea 
+                            class="chat-input" 
+                            id="userInput" 
+                            placeholder="Digite sua mensagem aqui..."
+                            rows="1"
+                        ></textarea>
+                        <button class="send-button" id="sendBtn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="suggestions">
+                        <div class="suggestion">O que é inteligência artificial?</div>
+                        <div class="suggestion">Como funciona o machine learning?</div>
+                        <div class="suggestion">Explique programação orientada a objetos</div>
+                        <div class="suggestion">Linguagens de programação populares</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <div class="sidebar-title">Modelo de IA</div>
+                    </div>
+                    <div class="model-select-wrapper">
+                        <select class="model-select" id="modelSelect">
+                            <option value="gpt-4">GPT-4 Ultra</option>
+                            <option value="gpt-3.5">GPT-3.5 Turbo</option>
+                            <option value="claude">Claude 3 Opus</option>
+                            <option value="llama">Llama 3</option>
+                        </select>
+                        <div class="select-arrow">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <div class="sidebar-title">Recursos Premium</div>
+                    </div>
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="feature-content">
+                                <div class="feature-title">Assistente de Código</div>
+                                <div class="feature-description">Geração e explicação de código em múltiplas linguagens</div>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: var(--secondary-gradient);">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="feature-content">
+                                <div class="feature-title">Análise Visual</div>
+                                <div class="feature-description">Processamento e interpretação de imagens</div>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: var(--accent-gradient);">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <div class="feature-content">
+                                <div class="feature-title">Tradução Avançada</div>
+                                <div class="feature-description">Tradução precisa entre mais de 50 idiomas</div>
+                            </div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="feature-content">
+                                <div class="feature-title">Análise de Dados</div>
+                                <div class="feature-description">Processamento e visualização de dados complexos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-header">
+                        <div class="sidebar-title">Conversas Recentes</div>
+                    </div>
+                    <div class="conversation-list">
+                        <div class="conversation-card">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="conversation-title">Introdução à Inteligência Artificial</div>
+                            <div class="conversation-time">1h</div>
+                        </div>
+                        <div class="conversation-card">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="conversation-title">Desenvolvimento Web com React</div>
+                            <div class="conversation-time">3h</div>
+                        </div>
+                        <div class="conversation-card">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="conversation-title">Algoritmos de Machine Learning</div>
+                            <div class="conversation-time">1d</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <div class="copyright">© 2023 GPT Ultra | Desenvolvido com tecnologia avançada de IA</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Termos</a>
+                <a href="#" class="footer-link">Privacidade</a>
+                <a href="#" class="footer-link">Ajuda</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const suggestions = document.querySelectorAll('.suggestion');
+        const featureCards = document.querySelectorAll('.feature-card');
+        const modelSelect = document.getElementById('modelSelect');
+        const conversationCards = document.querySelectorAll('.conversation-card');
+        
+        // Base de conhecimento
+        const knowledgeBase = {
+            "olá": "Olá! É um prazer conversar com você. Como posso ajudar hoje?",
+            "oi": "Olá! É um prazer conversar com você. Como posso ajudar hoje?",
+            "como vai": "Estou funcionando perfeitamente, obrigado por perguntar! Como posso ser útil para você hoje?",
+            "quem é você": "Sou o GPT Ultra, um assistente de IA avançado projetado para fornecer respostas detalhadas, precisas e úteis. Posso ajudar com informações, criação de conteúdo, programação, análises e muito mais.",
+            "o que você pode fazer": "Posso ajudar com uma ampla variedade de tarefas, incluindo: responder perguntas sobre diversos tópicos, explicar conceitos complexos, gerar e depurar código em várias linguagens, criar conteúdo textual, analisar dados, traduzir idiomas, e muito mais. Basta me dizer como posso ajudar!",
+            "o que é html": "HTML (HyperText Markup Language) é a linguagem padrão para criar páginas da web. É uma linguagem de marcação que define a estrutura do conteúdo de uma página web usando elementos representados por tags. O HTML permite organizar texto, imagens, links e outros conteúdos para exibição em navegadores web.",
+            "o que é css": "CSS (Cascading Style Sheets) é uma linguagem de estilo usada para descrever a apresentação de um documento escrito em HTML. O CSS controla o layout, cores, fontes e aparência visual de páginas web, permitindo separar o conteúdo (HTML) da apresentação visual, o que facilita a manutenção e melhora a experiência do usuário.",
+            "o que é javascript": "JavaScript é uma linguagem de programação de alto nível, interpretada e orientada a objetos que permite criar interatividade em páginas web. É a terceira camada do desenvolvimento web padrão, junto com HTML e CSS. JavaScript permite manipular o conteúdo da página, responder a eventos do usuário, comunicar-se com servidores, criar animações e desenvolver aplicações web completas.",
+            "o que é python": "Python é uma linguagem de programação de alto nível, interpretada, de script, imperativa, orientada a objetos, funcional, de tipagem dinâmica e forte. Foi criada por Guido van Rossum em 1991 e é conhecida por sua sintaxe clara e legível, o que a torna uma excelente linguagem para iniciantes. Python é amplamente utilizada em ciência de dados, inteligência artificial, desenvolvimento web, automação e muitas outras áreas.",
+            "o que é inteligência artificial": "Inteligência Artificial (IA) é um campo da ciência da computação que se concentra na criação de sistemas capazes de realizar tarefas que normalmente exigiriam inteligência humana. Isso inclui aprendizado, raciocínio, resolução de problemas, percepção, compreensão de linguagem natural e até mesmo criatividade. A IA moderna utiliza técnicas como machine learning e deep learning para analisar grandes volumes de dados e identificar padrões que permitem tomar decisões ou fazer previsões.",
+            "como funciona o machine learning": "Machine Learning (Aprendizado de Máquina) é uma subárea da Inteligência Artificial que permite aos sistemas aprender e melhorar automaticamente com a experiência, sem serem explicitamente programados. O processo funciona assim: 1) Coleta de dados relevantes para o problema; 2) Preparação e limpeza dos dados; 3) Escolha de um algoritmo apropriado (como regressão, árvores de decisão, redes neurais); 4) Treinamento do modelo com os dados; 5) Avaliação do desempenho; 6) Ajuste de parâmetros para melhorar resultados; 7) Implantação do modelo para fazer previsões com novos dados.",
+            "o que é deep learning": "Deep Learning (Aprendizado Profundo) é uma técnica avançada de Machine Learning baseada em redes neurais artificiais com múltiplas camadas (daí o termo 'profundo'). Estas redes são inspiradas na estrutura do cérebro humano e são capazes de aprender representações hierárquicas dos dados. O Deep Learning tem revolucionado áreas como visão computacional, processamento de linguagem natural e reconhecimento de voz, permitindo avanços significativos em tecnologias como carros autônomos, assistentes virtuais e sistemas de diagnóstico médico.",
+            "o que é programação orientada a objetos": "Programação Orientada a Objetos (POO) é um paradigma de programação baseado no conceito de 'objetos', que podem conter dados na forma de campos (atributos) e código, na forma de procedimentos (métodos). Os principais conceitos da POO incluem: 1) Classes: modelos que definem atributos e comportamentos; 2) Objetos: instâncias de classes; 3) Encapsulamento: ocultação de detalhes internos; 4) Herança: criação de novas classes a partir de existentes; 5) Polimorfismo: capacidade de objetos assumirem diferentes formas; 6) Abstração: foco nas características essenciais. A POO facilita a organização, reutilização e manutenção do código.",
+            "linguagens de programação populares": "As linguagens de programação mais populares atualmente incluem: 1) JavaScript: dominante no desenvolvimento web front-end e também usada no back-end (Node.js); 2) Python: amplamente utilizada em ciência de dados, IA, automação e desenvolvimento web; 3) Java: popular para aplicações empresariais e Android; 4) C/C++: usadas em sistemas de baixo nível, jogos e aplicações de alto desempenho; 5) C#: principal linguagem para desenvolvimento .NET; 6) PHP: comum em desenvolvimento web; 7) TypeScript: JavaScript com tipagem estática; 8) Swift: para desenvolvimento iOS; 9) Kotlin: alternativa moderna ao Java, especialmente para Android; 10) Go: eficiente para sistemas distribuídos e cloud computing."
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar tema salvo
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            // Ajustar altura do textarea
+            userInput.addEventListener('input', adjustTextareaHeight);
+            
+            // Habilitar/desabilitar botão de envio
+            userInput.addEventListener('input', () => {
+                sendBtn.disabled = userInput.value.trim() === '';
+            });
+            
+            // Enviar mensagem ao pressionar Enter (sem Shift)
+            userInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    if (!sendBtn.disabled) {
+                        sendMessage();
+                    }
+                }
+            });
+            
+            // Botão de enviar
+            sendBtn.addEventListener('click', sendMessage);
+            
+            // Botão de limpar chat
+            clearBtn.addEventListener('click', clearChat);
+            
+            // Botão de alternar tema
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Sugestões clicáveis
+            suggestions.forEach(suggestion => {
+                suggestion.addEventListener('click', () => {
+                    userInput.value = suggestion.textContent;
+                    sendBtn.disabled = false;
+                    sendMessage();
+                });
+            });
+            
+            // Cards de recursos clicáveis
+            featureCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const featureTitle = card.querySelector('.feature-title').textContent;
+                    addMessage('user', `Como funciona o recurso de ${featureTitle.toLowerCase()}?`);
+                    simulateTyping(`O recurso de ${featureTitle.toLowerCase()} permite que você ${getFeatureDescription(featureTitle)}. Esta é uma funcionalidade premium disponível para todos os usuários do GPT Ultra.`);
+                });
+            });
+            
+            // Cards de conversas clicáveis
+            conversationCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const conversationTitle = card.querySelector('.conversation-title').textContent;
+                    clearChat(false);
+                    addMessage('ai', `Conversa carregada: "${conversationTitle}". Como posso ajudar a continuar este tópico?`);
+                });
+            });
+            
+            // Seleção de modelo
+            modelSelect.addEventListener('change', () => {
+                const selectedModel = modelSelect.options[modelSelect.selectedIndex].text;
+                addMessage('ai', `Modelo alterado para ${selectedModel}. Como posso ajudar você com este modelo?`);
+            });
+        });
+
+        // Função para ajustar altura do textarea
+        function adjustTextareaHeight() {
+            userInput.style.height = 'auto';
+            userInput.style.height = Math.min(200, userInput.scrollHeight) + 'px';
+        }
+
+        // Função para enviar mensagem
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // Adicionar mensagem do usuário
+            addMessage('user', message);
+            
+            // Limpar input e resetar altura
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            sendBtn.disabled = true;
+            
+            // Processar resposta
+            processResponse(message);
+        }
+
+        // Função para adicionar mensagem ao chat
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.style.animationDelay = '0ms';
+            
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${sender}`;
+            
+            if (sender === 'ai') {
+                avatar.innerHTML = '<i class="fas fa-brain"></i>';
+            } else {
+                avatar.innerHTML = '<i class="fas fa-user"></i>';
+            }
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            messageText.textContent = text;
+            
+            const messageMeta = document.createElement('div');
+            messageMeta.className = 'message-meta';
+            
+            const messageTime = document.createElement('div');
+            messageTime.className = 'message-time';
+            messageTime.textContent = getCurrentTime();
+            
+            const messageStatus = document.createElement('div');
+            messageStatus.className = 'message-status';
+            
+            if (sender === 'user') {
+                messageStatus.innerHTML = '<i class="fas fa-check"></i>';
+            }
+            
+            messageMeta.appendChild(messageTime);
+            
+            if (sender === 'user') {
+                messageMeta.appendChild(messageStatus);
+            }
+            
+            bubble.appendChild(messageText);
+            bubble.appendChild(messageMeta);
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(bubble);
+            
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Função para simular digitação
+        function simulateTyping(text) {
+            // Criar mensagem de "digitando..."
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.style.animationDelay = '0ms';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar ai';
+            avatar.innerHTML = '<i class="fas fa-brain"></i>';
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            bubble.appendChild(typingIndicator);
+            
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(bubble);
+            
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+            
+            // Tempo de digitação baseado no comprimento do texto
+            const typingTime = Math.min(2000, Math.max(700, text.length * 15));
+            
+            // Remover indicador de digitação e adicionar mensagem após o tempo
+            setTimeout(() => {
+                chatMessages.removeChild(typingDiv);
+                addMessage('ai', text);
+            }, typingTime);
+        }
+
+        // Função para processar a resposta
+        function processResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            let response = '';
+            
+            // Verificar na base de conhecimento
+            for (const key in knowledgeBase) {
+                if (lowerMessage.includes(key)) {
+                    response = knowledgeBase[key];
+                    break;
+                }
+            }
+            
+            // Resposta padrão se não encontrar na base de conhecimento
+            if (!response) {
+                const defaultResponses = [
+                    "Esta é uma pergunta interessante! Embora eu não tenha uma resposta específica em minha base de conhecimento, posso dizer que este é um tópico fascinante com muitas nuances. Você gostaria que eu explorasse algum aspecto específico?",
+                    "Obrigado pela sua pergunta! Este é um tópico que merece uma análise cuidadosa. Poderia fornecer mais detalhes sobre o que especificamente você gostaria de saber?",
+                    "Esta é uma excelente pergunta! Há várias perspectivas sobre este assunto. Para fornecer a resposta mais relevante, você poderia especificar um pouco mais o contexto ou o que você está tentando entender?",
+                    "Que pergunta interessante! Para garantir que minha resposta seja útil, poderia me dar mais contexto sobre o que você está buscando entender?",
+                    "Obrigado por perguntar! Para oferecer a melhor resposta possível, poderia elaborar um pouco mais sobre o que você está procurando?"
+                ];
+                response = defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+            }
+            
+            // Simular digitação
+            simulateTyping(response);
+        }
+
+        // Função para obter descrição de recurso
+        function getFeatureDescription(featureTitle) {
+            const descriptions = {
+                "Assistente de Código": "criar, depurar e otimizar código em mais de 40 linguagens de programação diferentes, com explicações detalhadas e sugestões de melhores práticas",
+                "Análise Visual": "processar imagens para extrair informações, reconhecer objetos, texto e padrões visuais, além de gerar descrições detalhadas do conteúdo visual",
+                "Tradução Avançada": "traduzir textos entre dezenas de idiomas com alta precisão, preservando nuances culturais, expressões idiomáticas e contexto específico",
+                "Análise de Dados": "processar grandes conjuntos de dados, identificar padrões, criar visualizações e extrair insights significativos para tomada de decisões baseadas em dados"
+            };
+            
+            return descriptions[featureTitle] || "utilizar recursos avançados de inteligência artificial para aumentar sua produtividade e obter resultados de alta qualidade";
+        }
+
+        // Função para limpar o chat
+        function clearChat(confirm = true) {
+            if (!confirm || window.confirm("Tem certeza que deseja limpar toda a conversa?")) {
+                chatMessages.innerHTML = '';
+                
+                // Adicionar mensagem inicial
+                if (!confirm) return;
+                
+                addMessage('ai', 'Olá! Sou o GPT Ultra, seu assistente de IA avançado. Como posso ajudar você hoje?');
+            }
+        }
+
+        // Função para alternar tema
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-theme');
+            
+            if (body.classList.contains('light-theme')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Função para obter hora atual
+        function getCurrentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            return `${hours}:${minutes}`;
+        }
+
+        // Função para rolar para o final do chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

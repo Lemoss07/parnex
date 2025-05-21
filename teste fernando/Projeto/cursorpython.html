@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxuryAI - Assistente Premium</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* Cores principais */
+      --primary-color: #6db9d1;
+      --primary-light: #6db9d1;
+      --primary-dark: #6db9d1;
+      --secondary-color: #6db9d1;
+      --secondary-light: #6db9d1;
+      --secondary-dark: #6db9d1;
+      --accent-color: #f59e0b;
+      
+      /* Tons de cinza */
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --gray-950: #030712;
+      
+      /* Cores de fundo */
+      --bg-gradient-start: #242424;
+      --bg-gradient-end: #242424;
+      --card-bg: #242424;
+      --sidebar-bg: #242424;
+      
+      /* Elementos de UI */
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-lg: 16px;
+      --border-radius-xl: 24px;
+      --border-radius-full: 9999px;
+      
+      /* Sombras */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+      --shadow-glow: 0 0 15px rgba(147, 51, 234, 0.5);
+      
+      /* Transições */
+      --transition-fast: all 0.2s ease;
+      --transition-normal: all 0.3s ease;
+      --transition-slow: all 0.5s ease;
+      
+      /* Fontes */
+      --font-sans: 'Montserrat', sans-serif;
+      --font-serif: 'Playfair Display', serif;
+      --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(ellipse at top, var(--bg-gradient-start), transparent),
+                  radial-gradient(ellipse at bottom, var(--bg-gradient-end), transparent),
+                  linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--gray-100);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .app-container {
+      display: flex;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Efeito de partículas no fundo */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.3;
+      background: linear-gradient(to right, var(--primary-light), var(--secondary-light));
+      animation: float 15s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+      }
+      25% {
+        transform: translateY(-30px) translateX(15px);
+      }
+      50% {
+        transform: translateY(-15px) translateX(30px);
+      }
+      75% {
+        transform: translateY(-30px) translateX(15px);
+      }
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 280px;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      transition: var(--transition-normal);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius-full);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        transform: translateX(-100%) rotate(45deg);
+      }
+      20%, 100% {
+        transform: translateX(100%) rotate(45deg);
+      }
+    }
+
+    .logo-icon i {
+      color: white;
+      font-size: 1.25rem;
+      z-index: 1;
+    }
+
+    .logo-text {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.5rem;
+      background: linear-gradient(to right, var(--primary-light), var(--secondary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-toggle {
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .sidebar-toggle:hover {
+      color: var(--gray-100);
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .sidebar-content::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .sidebar-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius-full);
+    }
+
+    .sidebar-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .sidebar-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray-400);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .sidebar-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--border-radius-md);
+      color: var(--gray-300);
+      text-decoration: none;
+      transition: var(--transition-fast);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+      opacity: 0;
+      transition: var(--transition-fast);
+    }
+
+    .sidebar-item:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--gray-100);
+    }
+
+    .sidebar-item.active {
+      background: linear-gradient(to right, rgba(147, 51, 234, 0.1), transparent);
+      color: var(--gray-50);
+    }
+
+    .sidebar-item.active::before {
+      opacity: 1;
+    }
+
+    .sidebar-item i {
+      font-size: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar-item .badge {
+      margin-left: auto;
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gray-300);
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--border-radius-full);
+    }
+
+    .sidebar-item.premium {
+      background: linear-gradient(to right, rgba(245, 158, 11, 0.1), transparent);
+    }
+
+    .sidebar-item.premium i {
+      color: var(--accent-color);
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--border-radius-full);
+      background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--gray-100);
+    }
+
+    .user-plan {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    .user-menu {
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .user-menu:hover {
+      color: var(--gray-100);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      z-index: 5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: #242424;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+
+    .chat-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .chat-title {
+      font-weight: 600;
+      font-size: 1.125rem;
+      color: var(--gray-100);
+    }
+
+    .chat-subtitle {
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    .chat-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-md);
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: var(--transition-fast);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-icon {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: var(--border-radius-full);
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-outline {
+      background: #ffffff0d;
+      color: var(--gray-300);
+      border: 1px solid rgba(40, 37, 37, 0.1);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gray-100);
+    }
+
+    .model-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: var(--border-radius-full);
+      color: var(--secondary-light);
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .model-badge i {
+      font-size: 0.875rem;
+    }
+
+    /* Chat Messages */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      scroll-behavior: smooth;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius-full);
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .message {
+      display: flex;
+      gap: 1rem;
+      max-width: 85%;
+      animation: fadeIn 0.5s ease;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .message-avatar::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: var(--border-radius-full);
+      background: linear-gradient(to right, var(--primary-light), var(--secondary-light));
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .user-avatar-chat {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+      color: white;
+    }
+
+    .ai-avatar {
+      background: linear-gradient(135deg, var(--secondary-light), var(--secondary-dark));
+      color: white;
+    }
+
+    .message-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius-lg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .message-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .message-name {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--gray-100);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .message-name i {
+      font-size: 0.75rem;
+      color: var(--secondary-light);
+    }
+
+
+    .message-text {
+      line-height: 1.7;
+      color: var(--gray-300);
+      font-size: 0.9375rem;
+    }
+
+    .message-text p {
+      margin-bottom: 1rem;
+    }
+
+    .message-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .message-text strong {
+      color: var(--gray-100);
+      font-weight: 600;
+    }
+
+    .message-text a {
+      color: var(--primary-light);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--primary-light);
+      transition: var(--transition-fast);
+    }
+
+    .message-text a:hover {
+      color: var(--primary-color);
+      border-bottom-style: solid;
+    }
+
+    .message-text ul, .message-text ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .message-text li {
+      margin-bottom: 0.5rem;
+    }
+
+    .message-text code {
+      font-family: var(--font-mono);
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 0.125rem 0.25rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      color: var(--gray-200);
+    }
+
+    .message-text pre {
+      background-color: rgba(15, 23, 42, 0.8);
+      padding: 1rem;
+      border-radius: var(--border-radius-md);
+      overflow-x: auto;
+      margin: 1rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .message-text pre code {
+      background-color: transparent;
+      padding: 0;
+      font-size: 0.875rem;
+      color: var(--gray-300);
+      display: block;
+    }
+
+    .message-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .message-action {
+      background: transparent;
+      border: none;
+      color: var(--gray-500);
+      font-size: 0.875rem;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--border-radius-sm);
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .message-action:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--gray-300);
+    }
+
+    .message-action i {
+      font-size: 0.875rem;
+    }
+
+    .user-message {
+      align-self: flex-end;
+    }
+
+    .ai-message {
+      align-self: flex-start;
+    }
+
+    /* Code Block */
+    .code-block {
+      position: relative;
+      margin: 1rem 0;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background-color: rgba(15, 23, 42, 0.9);
+      border-top-left-radius: var(--border-radius-md);
+      border-top-right-radius: var(--border-radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: none;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    .code-language {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .code-language i {
+      color: var(--primary-light);
+    }
+
+    .code-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .code-action {
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--border-radius-sm);
+    }
+
+    .code-action:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--gray-200);
+    }
+
+    .code-content {
+      margin-top: 0 !important;
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background-color: rgba(15, 23, 42, 0.8) !important;
+    }
+
+    /* Chat Input */
+    .chat-input-container {
+      padding: 1.5rem;
+      background: #242424;
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 10;
+    }
+
+    .chat-input-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: rgba(15, 23, 42, 0.6);
+      color: var(--gray-200);
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      resize: none;
+      min-height: 60px;
+      max-height: 200px;
+      overflow-y: auto;
+      transition: var(--transition-normal);
+      box-shadow: var(--shadow-inner);
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.2);
+    }
+
+    .chat-input::placeholder {
+      color: var(--gray-500);
+    }
+
+    .chat-input-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-options {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .input-option {
+      background: transparent;
+      border: none;
+      color: var(--gray-400);
+      font-size: 1rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--border-radius-full);
+      transition: var(--transition-fast);
+    }
+
+    .input-option:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--gray-200);
+    }
+
+    .input-option.active {
+      background-color: rgba(147, 51, 234, 0.1);
+      color: var(--primary-light);
+    }
+
+    .send-button {
+      background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: var(--border-radius-md);
+      padding: 0.75rem 1.5rem;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .send-button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .send-button:active {
+      transform: translateY(0);
+    }
+
+    .send-button:disabled {
+      background: linear-gradient(to right, var(--gray-700), var(--gray-800));
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .input-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      padding: 0 0.25rem;
+    }
+
+    .input-info-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .input-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .input-info-right {
+      font-style: italic;
+    }
+
+    /* Typing Indicator */
+    .typing-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      margin-top: 0.5rem;
+    }
+
+    .typing-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: var(--gray-400);
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+      30% {
+        transform: translateY(-4px);
+        opacity: 1;
+      }
+    }
+
+    /* Welcome Screen */
+    .welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+      padding: 2rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .welcome-logo {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .welcome-logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--border-radius-full);
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-xl);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-logo-icon::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(45deg);
+      animation: shine 3s infinite;
+    }
+
+    .welcome-logo-icon i {
+      color: white;
+      font-size: 2.5rem;
+      z-index: 1;
+    }
+
+    .welcome-title {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, var(--primary-light), var(--secondary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+    }
+
+    .welcome-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, var(--primary-light), var(--secondary-light));
+      border-radius: var(--border-radius-full);
+    }
+
+    .welcome-subtitle {
+      font-size: 1.25rem;
+      color: var(--gray-300);
+      margin-bottom: 3rem;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .welcome-features {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .welcome-feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      max-width: 200px;
+    }
+
+    .welcome-feature-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--border-radius-full);
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: var(--primary-light);
+      margin-bottom: 0.5rem;
+      transition: var(--transition-normal);
+    }
+
+    .welcome-feature:hover .welcome-feature-icon {
+      transform: translateY(-5px);
+      background: rgba(147, 51, 234, 0.1);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .welcome-feature-title {
+      font-weight: 600;
+      color: var(--gray-100);
+      text-align: center;
+      font-size: 1.125rem;
+    }
+
+    .welcome-feature-text {
+      font-size: 0.875rem;
+      color: var(--gray-400);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .welcome-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .welcome-example {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius-lg);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-example::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .welcome-example:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(147, 51, 234, 0.3);
+    }
+
+    .welcome-example-title {
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--gray-100);
+      font-size: 1.125rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .welcome-example-title i {
+      color: var(--primary-light);
+    }
+
+    .welcome-example-text {
+      color: var(--gray-400);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 240px;
+      }
+      
+      .welcome-features {
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .sidebar-content {
+        display: none;
+      }
+      
+      .sidebar-header {
+        padding: 1rem;
+      }
+      
+      .sidebar-footer {
+        padding: 1rem;
+      }
+      
+      .message {
+        max-width: 95%;
+      }
+      
+      .welcome-title {
+        font-size: 2.5rem;
+      }
+      
+      .welcome-subtitle {
+        font-size: 1.125rem;
+      }
+      
+      .welcome-features {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .chat-header {
+        padding: 1rem;
+      }
+      
+      .chat-messages {
+        padding: 1rem;
+      }
+      
+      .chat-input-container {
+        padding: 1rem;
+      }
+      
+      .welcome-title {
+        font-size: 2rem;
+      }
+      
+      .welcome-logo-icon {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .welcome-logo-icon i {
+        font-size: 1.75rem;
+      }
+      
+      .input-options {
+        gap: 0.5rem;
+      }
+      
+      .send-button {
+        padding: 0.75rem 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Partículas de fundo -->
+  <div class="particles" id="particles"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="logo-text">ParnexUltra</div>
+        </div>
+        <button class="sidebar-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <div class="sidebar-section">
+          <div class="sidebar-title">
+            <i class="fas fa-history"></i>
+            <span>Histórico</span>
+          </div>
+          <a href="#" class="sidebar-item active">
+            <i class="fas fa-comment-alt"></i>
+            <span>Nova conversa</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-lightbulb"></i>
+            <span>Ideias para startup</span>
+            <span class="badge">3</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-code"></i>
+            <span>Ajuda com React</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-book"></i>
+            <span>Resumo de artigo</span>
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">
+            <i class="fas fa-star"></i>
+            <span>Modelos</span>
+          </div>
+          <a href="#" class="sidebar-item premium">
+            <i class="fas fa-crown"></i>
+            <span>ParnexUltra</span>
+            <span class="badge">PRO</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-bolt"></i>
+            <span>ParnexUltra Rápido</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-code"></i>
+            <span>ParnexUltra Código</span>
+          </a>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-title">
+            <i class="fas fa-tools"></i>
+            <span>Ferramentas</span>
+          </div>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-image"></i>
+            <span>Gerador de imagens</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-file-alt"></i>
+            <span>Assistente de escrita</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Análise de dados</span>
+          </a>
+          <a href="#" class="sidebar-item">
+            <i class="fas fa-language"></i>
+            <span>Tradutor avançado</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="user-info">
+          <div class="user-name">Usuário Premium</div>
+          <div class="user-plan">Plano Ultra</div>
+        </div>
+        <button class="user-menu">
+          <i class="fas fa-ellipsis-v"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="chat-header">
+        <div class="chat-info">
+          <div class="chat-title">Nova conversa</div>
+        </div>
+        <div class="chat-actions">
+          <div class="model-badge">
+            <i class="fas fa-bolt"></i>
+            <span>ParnexUltra</span>
+          </div>
+          <button class="btn btn-icon btn-outline">
+            <i class="fas fa-share-alt"></i>
+          </button>
+          <button class="btn btn-icon btn-outline">
+            <i class="fas fa-ellipsis-h"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <!-- Mensagem de boas-vindas -->
+        <div class="message ai-message">
+          <div class="message-avatar ai-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <div class="message-name">
+                <i class="fas fa-check-circle"></i>
+                ParnexUltra
+              </div>
+              <div class="message-time">15:30</div>
+            </div>
+            <div class="message-text">
+              <p>Olá! Sou o <strong>ParnexUltra</strong>, seu assistente de inteligência artificial premium. Estou aqui para ajudar com qualquer pergunta ou tarefa que você tenha.</p>
+              <p>Como posso auxiliar você hoje? Posso responder perguntas, criar conteúdo, ajudar com programação, fornecer análises, e muito mais.</p>
+            </div>
+            <div class="message-actions">
+              <button class="message-action">
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-thumbs-down"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-redo-alt"></i>
+                <span>Regenerar</span>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-copy"></i>
+                <span>Copiar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensagem do usuário -->
+        <div class="message user-message">
+          <div class="message-avatar user-avatar-chat">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <div class="message-name">Você</div>
+              <div class="message-time">15:32</div>
+            </div>
+            <div class="message-text">
+              <p>Explique como a inteligência artificial funciona de forma simples e elegante.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resposta do AI -->
+        <div class="message ai-message">
+          <div class="message-avatar ai-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <div class="message-name">
+                <i class="fas fa-check-circle"></i>
+                ParnexUltra
+              </div>
+              <div class="message-time">15:33</div>
+            </div>
+            <div class="message-text">
+              <p>Imagine a inteligência artificial como um aprendiz extraordinariamente dedicado. Assim como um sommelier refina seu paladar ao longo de anos de degustação, a IA refina sua compreensão através de milhões de exemplos.</p>
+              
+              <p>Em sua essência mais elegante, a IA funciona em três atos principais:</p>
+              
+              <p><strong>Ato I: Percepção</strong><br>
+              A IA observa padrões em dados — sejam textos, imagens ou sons — assim como um artista observa nuances de luz e sombra. Ela não vê com olhos humanos, mas percebe através de números e estatísticas, transformando o mundo em uma tapeçaria matemática.</p>
+              
+              <p><strong>Ato II: Aprendizado</strong><br>
+              Através de um processo chamado "aprendizado de máquina", a IA ajusta sua compreensão interna. Quando erra, refina seu modelo. Quando acerta, reforça suas conexões. É como um pianista que pratica incessantemente, com cada nota errada informando a próxima tentativa.</p>
+              
+              <p><strong>Ato III: Criação</strong><br>
+              Finalmente, a IA sintetiza o que aprendeu para criar algo novo — seja uma resposta, uma imagem, ou uma estratégia. Não é mera repetição, mas uma composição baseada em tudo que absorveu, como um chef que cria um novo prato inspirado em milhares de sabores experimentados.</p>
+              
+              <p>O que torna a IA verdadeiramente fascinante é que, embora seus mecanismos internos sejam matemáticos, o resultado pode ser profundamente criativo e adaptativo — como uma orquestra onde cada instrumento matemático contribui para uma sinfonia que transcende suas partes individuais.</p>
+              
+              <p>Há algo mais específico sobre inteligência artificial que gostaria de explorar?</p>
+            </div>
+            <div class="message-actions">
+              <button class="message-action">
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-thumbs-down"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-redo-alt"></i>
+                <span>Regenerar</span>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-copy"></i>
+                <span>Copiar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-container">
+        <div class="chat-input-wrapper">
+          <textarea class="chat-input" id="userInput" placeholder="Envie uma mensagem..." rows="1"></textarea>
+          
+          <div class="chat-input-actions">
+            <div class="input-options">
+              <button class="input-option" title="Anexar arquivo">
+                <i class="fas fa-paperclip"></i>
+              </button>
+              <button class="input-option" title="Gravar áudio">
+                <i class="fas fa-microphone"></i>
+              </button>
+              <button class="input-option" title="Inserir código">
+                <i class="fas fa-code"></i>
+              </button>
+              <button class="input-option" title="Inserir emoji">
+                <i class="fas fa-smile"></i>
+              </button>
+            </div>
+            
+            <button class="send-button" id="sendButton">
+              <span>Enviar</span>
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          
+          <div class="input-info">
+            <div class="input-info-left">
+              <div class="input-info-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>Criptografado</span>
+              </div>
+              <div class="input-info-item">
+                <i class="fas fa-bolt"></i>
+                <span>Ultra rápido</span>
+              </div>
+            </div>
+            <div class="input-info-right">
+              Enter para enviar, Shift+Enter para nova linha
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Criar partículas de fundo
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Tamanho aleatório
+        const size = Math.random() * 150 + 50;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Posição aleatória
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Opacidade aleatória
+        particle.style.opacity = Math.random() * 0.2 + 0.05;
+        
+        // Atraso de animação aleatório
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+        
+        // Duração de animação aleatória
+        particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+      
+      // Elementos do chat
+      const chatMessages = document.getElementById('chatMessages');
+      const userInput = document.getElementById('userInput');
+      const sendButton = document.getElementById('sendButton');
+      
+      // Auto-resize textarea
+      userInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+      });
+      
+      // Enviar mensagem ao pressionar Enter (sem Shift)
+      userInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+      
+      // Enviar mensagem ao clicar no botão
+      sendButton.addEventListener('click', sendMessage);
+      
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+        
+        // Adicionar mensagem do usuário
+        addMessage('user', message);
+        
+        // Limpar input
+        userInput.value = '';
+        userInput.style.height = 'auto';
+        
+        // Mostrar indicador de digitação
+        showTypingIndicator();
+        
+        // Simular resposta da IA após um atraso
+        setTimeout(() => {
+          // Esconder indicador de digitação
+          hideTypingIndicator();
+          
+          // Gerar resposta da IA com base na entrada do usuário
+          const aiResponse = generateResponse(message);
+          
+          // Adicionar resposta da IA
+          addMessage('ai', aiResponse);
+          
+          // Rolar para o final
+          scrollToBottom();
+        }, 2000);
+      }
+      
+      function addMessage(type, text) {
+        const now = new Date();
+        const time = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}-message`;
+        
+        const avatar = type === 'user' ? 
+          '<i class="fas fa-user"></i>' : 
+          '<i class="fas fa-robot"></i>';
+        
+        const name = type === 'user' ? 'Você' : '<i class="fas fa-check-circle"></i> ParnexUltra';
+        
+        let messageContent = `
+          <div class="message-avatar ${type === 'user' ? 'user-avatar-chat' : 'ai-avatar'}">
+            ${avatar}
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <div class="message-name">${name}</div>
+              <div class="message-time">${time}</div>
+            </div>
+            <div class="message-text">
+              <p>${text}</p>
+            </div>
+        `;
+        
+        // Adicionar ações de mensagem para mensagens da IA
+        if (type === 'ai') {
+          messageContent += `
+            <div class="message-actions">
+              <button class="message-action">
+                <i class="fas fa-thumbs-up"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-thumbs-down"></i>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-redo-alt"></i>
+                <span>Regenerar</span>
+              </button>
+              <button class="message-action">
+                <i class="fas fa-copy"></i>
+                <span>Copiar</span>
+              </button>
+            </div>
+          `;
+        }
+        
+        messageContent += `</div>`;
+        messageDiv.innerHTML = messageContent;
+        
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+      }
+      
+      function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message ai-message';
+        typingDiv.id = 'typingIndicator';
+        
+        typingDiv.innerHTML = `
+          <div class="message-avatar ai-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <div class="message-name"><i class="fas fa-check-circle"></i> LuxuryAI</div>
+              <div class="message-time">agora</div>
+            </div>
+            <div class="typing-indicator">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+        `;
+        
+        chatMessages.appendChild(typingDiv);
+        scrollToBottom();
+      }
+      
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+      }
+      
+      function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+      
+      function generateResponse(message) {
+        // Geração de resposta simples baseada em palavras-chave
+        // Em um aplicativo real, isso se conectaria a uma API de IA
+        const lowerMessage = message.toLowerCase();
+        
+        if (lowerMessage.includes('olá') || lowerMessage.includes('oi') || lowerMessage.includes('hey')) {
+          return 'Olá! É um prazer conversar com você. Como posso ajudar hoje?';
+        } else if (lowerMessage.includes('como você funciona') || lowerMessage.includes('como funciona')) {
+          return 'Funciono através de modelos avançados de linguagem que foram treinados com bilhões de textos. Analiso padrões, contexto e significado para gerar respostas relevantes e úteis para suas perguntas.';
+        } else if (lowerMessage.includes('obrigado') || lowerMessage.includes('obrigada')) {
+          return 'Foi um prazer ajudar! Estou sempre à disposição para qualquer outra questão que você tenha.';
+        } else if (lowerMessage.includes('programação') || lowerMessage.includes('código') || lowerMessage.includes('desenvolv')) {
+          return 'A programação é uma arte fascinante! Posso ajudar com várias linguagens como JavaScript, Python, Java, ou conceitos de desenvolvimento. Qual aspecto específico você gostaria de explorar?';
+        } else {
+          return 'Claro! Abaixo está um exemplo simples de um site de loja de roupas feito com HTML e CSS. Ele inclui um cabeçalho, uma seção de produtos e um rodapé. Ideal para fins de apresentação ou como ponto de partida para algo maior:';
+        }
+      }
+      
+      // Inicializar
+      scrollToBottom();
+      
+      // Toggle da sidebar em dispositivos móveis
+      const sidebarToggle = document.querySelector('.sidebar-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const sidebarContent = document.querySelector('.sidebar-content');
+      
+      sidebarToggle.addEventListener('click', function() {
+        sidebarContent.style.display = sidebarContent.style.display === 'flex' ? 'none' : 'flex';
+      });
+    });
+  </script>
+</body>
+</html>

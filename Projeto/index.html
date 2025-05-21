@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem-Estar Infantil - Cuidando do futuro</title>
+  <style>
+    :root {
+      --primary-color: #87CEEB;
+      --background-color: #242424;
+      --text-color: #ffffff;
+      --accent-color: #6fff57;
+      --card-bg: #333333;
+      --border-radius: 40px;
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      --warning-color: #ffd166;
+      --success-color: #06d6a0;
+      --energy-color: #ff9f1c;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    header {
+      background-color: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .app-name {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .nav-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+    
+    .nav-link.active {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .btn {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      background-color: #6db9d1;
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: rgba(135, 206, 235, 0.1);
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/placeholder.svg?height=600&width=1200');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      padding-top: 70px;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero-title {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: #ddd;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+    
+    .btn-large {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+    }
+    
+    /* Features Section */
+    .section {
+      padding: 100px 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+    
+    .section-subtitle {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+      color: #aaa;
+      font-size: 1.1rem;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      transition: transform 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    
+    .feature-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    
+    .feature-desc {
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+    
+    /* How It Works */
+    .how-it-works {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      counter-reset: step-counter;
+    }
+    
+    .step {
+      flex: 1;
+      min-width: 250px;
+      max-width: 350px;
+      position: relative;
+      padding: 30px;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .step::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute;
+      top: -20px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .step-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    
+    .step-desc {
+      color: #aaa;
+      font-size: 0.95rem;
+    }
+    
+    /* App Screenshots */
+    .screenshots {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+    
+    .screenshot {
+      width: 250px;
+      height: 500px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      border: 10px solid var(--card-bg);
+    }
+    
+    .screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+    
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .testimonial-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 20px;
+      color: #ddd;
+      position: relative;
+    }
+    
+    .testimonial-text::before {
+      content: '"';
+      font-size: 4rem;
+      color: rgba(135, 206, 235, 0.2);
+      position: absolute;
+      top: -20px;
+      left: -15px;
+      z-index: -1;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .author-name {
+      font-weight: bold;
+    }
+    
+    .author-role {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    /* CTA Section */
+    .cta {
+      text-align: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/placeholder.svg?height=400&width=1200');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    .cta-title {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+    
+    .cta-subtitle {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: #ddd;
+      font-size: 1.1rem;
+    }
+    
+    .app-badges {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .app-badge {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #333;
+      transition: transform 0.3s;
+    }
+    
+    .app-badge:hover {
+      transform: scale(1.05);
+    }
+    
+    .badge-icon {
+      font-size: 2rem;
+    }
+    
+    .badge-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .badge-small {
+      font-size: 0.8rem;
+    }
+    
+    .badge-large {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 60px 0 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-column h3 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-container {
+        padding: 10px 20px;
+      }
+      
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: var(--background-color);
+        flex-direction: column;
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .nav-menu.active {
+        display: flex;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .section {
+        padding: 60px 0;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .steps {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .step {
+        width: 100%;
+      }
+      
+      .screenshot {
+        width: 200px;
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="imagem/logo.jpeg" alt="Logo do Bem-Estar Infantil" class="logo">
+        <div class="app-name">Bem-Estar Infantil</div>
+      </div>
+      
+      <nav class="nav-menu" id="navMenu">
+        <a href="#inicio" class="nav-link active">Início</a>
+        <a href="#recursos" class="nav-link">Recursos</a>
+        <a href="#como-funciona" class="nav-link">Como Funciona</a>
+        <a href="#depoimentos" class="nav-link">Depoimentos</a>
+        <a href="#contato" class="nav-link">Contato</a>
+      </nav>
+      
+      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Cuidando do bem-estar do seu filho</h1>
+        <p class="hero-subtitle">Acompanhe o desenvolvimento, saúde, nutrição e atividades físicas do seu filho em um só lugar. Tudo o que você precisa para garantir um crescimento saudável e feliz.</p>
+        <div class="hero-buttons">
+         <button class="btn" onclick="window.location.href= 'cadastrar.html'">Começar Agora</button>
+          <a href="#como-funciona" class="btn btn-outline btn-large">Saiba Mais</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="recursos">
+    <div class="container">
+      <h2 class="section-title">Recursos Principais</h2>
+      <p class="section-subtitle">Descubra como o Bem-Estar Infantil pode ajudar você a cuidar melhor da saúde e desenvolvimento do seu filho.</p>
+      
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">🩺</div>
+          <h3 class="feature-title">Monitoramento de Saúde</h3>
+          <p class="feature-desc">Acompanhe o crescimento, peso, altura e outros indicadores de saúde. Receba alertas sobre consultas médicas e exames.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">💉</div>
+          <h3 class="feature-title">Controle de Vacinas</h3>
+          <p class="feature-desc">Mantenha o calendário de vacinação em dia com lembretes personalizados e informações detalhadas sobre cada vacina.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🍎</div>
+          <h3 class="feature-title">Nutrição e Alimentação</h3>
+          <p class="feature-desc">Acesse cardápios saudáveis, dicas nutricionais e monitore alergias alimentares para garantir uma alimentação adequada.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🏃</div>
+          <h3 class="feature-title">Atividades Físicas</h3>
+          <p class="feature-desc">Encontre sugestões de atividades físicas adequadas para cada idade e acompanhe o desenvolvimento motor da criança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section how-it-works" id="como-funciona">
+    <div class="container">
+      <h2 class="section-title">Como Funciona</h2>
+      <p class="section-subtitle">Em apenas três passos simples, você terá acesso a todas as ferramentas para cuidar da saúde do seu filho.</p>
+      
+      <div class="steps">
+        <div class="step">
+          <h3 class="step-title">Crie sua conta</h3>
+          <p class="step-desc">Cadastre-se gratuitamente e adicione o perfil dos seus filhos com informações básicas como idade, peso e altura.</p>
+        </div>
+        
+        <div class="step">
+          <h3 class="step-title">Personalize o acompanhamento</h3>
+          <p class="step-desc">Configure as preferências de monitoramento, adicione informações médicas e defina lembretes importantes.</p>
+        </div>
+        
+        <div class="step">
+          <h3 class="step-title">Acompanhe o desenvolvimento</h3>
+          <p class="step-desc">Acesse relatórios, gráficos e recomendações personalizadas para cada fase do desenvolvimento infantil.</p>
+        </div>
+      </div>
+      
+      <div class="screenshots">
+        <div class="screenshot">
+          <img src="/placeholder.svg?height=500&width=250" alt="Tela do aplicativo - Monitoramento de Saúde">
+        </div>
+        <div class="screenshot">
+          <img src="/placeholder.svg?height=500&width=250" alt="Tela do aplicativo - Controle de Vacinas">
+        </div>
+        <div class="screenshot">
+          <img src="/placeholder.svg?height=500&width=250" alt="Tela do aplicativo - Nutrição">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials" id="depoimentos">
+    <div class="container">
+      <h2 class="section-title">O que os pais dizem</h2>
+      <p class="section-subtitle">Descubra como o Bem-Estar Infantil tem ajudado famílias a cuidar melhor da saúde de seus filhos.</p>
+      
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-text">O aplicativo mudou completamente a forma como acompanho a saúde dos meus filhos. Os lembretes de vacinas são perfeitos e nunca mais perdi uma consulta médica!</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AP</div>
+            <div class="author-info">
+              <div class="author-name">Ana Paula</div>
+              <div class="author-role">Mãe de 2 filhos</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <p class="testimonial-text">Como pai de primeira viagem, o aplicativo tem sido um guia essencial. As dicas de nutrição e as sugestões de atividades me ajudaram muito a entender as necessidades do meu bebê.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RM</div>
+            <div class="author-info">
+              <div class="author-name">Ricardo Mendes</div>
+              <div class="author-role">Pai de 1 filho</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-card">
+          <p class="testimonial-text">Como pediatra, recomendo o Bem-Estar Infantil para todos os meus pacientes. É uma ferramenta completa que ajuda os pais a manterem um acompanhamento detalhado da saúde das crianças.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">CS</div>
+            <div class="author-info">
+              <div class="author-name">Dra. Carla Santos</div>
+              <div class="author-role">Pediatra</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="container">
+      <h2 class="cta-title">Comece a cuidar melhor da saúde do seu filho hoje</h2>
+      <p class="cta-subtitle">Junte-se a milhares de famílias que já estão usando o Bem-Estar Infantil para acompanhar o desenvolvimento de seus filhos.</p>
+      
+      <a href="cadastro.html" class="btn btn-large">Criar Conta Gratuita</a>
+      
+      <div class="app-badges">
+        <a href="#" class="app-badge">
+          <div class="badge-icon">A</div>
+          <div class="badge-text">
+            <span class="badge-small">Disponível na</span>
+            <span class="badge-large">App Store</span>
+          </div>
+        </a>
+        
+        <a href="#" class="app-badge">
+          <div class="badge-icon">G</div>
+          <div class="badge-text">
+            <span class="badge-small">Disponível no</span>
+            <span class="badge-large">Google Play</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contato">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <div class="logo-container">
+            <img src="/placeholder.svg?height=50&width=50" alt="Logo do Bem-Estar Infantil" class="logo">
+            <div class="app-name">Bem-Estar Infantil</div>
+          </div>
+          <p style="color: #aaa; margin-top: 20px;">Cuidando do futuro com informação, tecnologia e amor.</p>
+          <div class="social-links">
+            <a href="#" class="social-link">F</a>
+            <a href="#" class="social-link">I</a>
+            <a href="#" class="social-link">T</a>
+            <a href="#" class="social-link">Y</a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Recursos</h3>
+          <ul class="footer-links">
+            <li><a href="saude.html">Monitoramento de Saúde</a></li>
+            <li><a href="vacinas.html">Controle de Vacinas</a></li>
+            <li><a href="nutricao.html">Nutrição e Alimentação</a></li>
+            <li><a href="atividade-fisica.html">Atividades Físicas</a></li>
+            <li><a href="doencas.html">Doenças e Prevenção</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Empresa</h3>
+          <ul class="footer-links">
+            <li><a href="#">Sobre Nós</a></li>
+            <li><a href="#">Nossa Equipe</a></li>
+            <li><a href="#">Parceiros</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Carreiras</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3>Suporte</h3>
+          <ul class="footer-links">
+            <li><a href="#">Central de Ajuda</a></li>
+            <li><a href="#">Perguntas Frequentes</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Política de Privacidade</a></li>
+            <li><a href="#">Termos de Uso</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>© 2025 Bem-Estar Infantil • Todos os direitos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Script para navegação responsiva
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+    
+    // Script para navegação suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 70,
+            behavior: 'smooth'
+          });
+          
+          // Fechar menu mobile se estiver aberto
+          navMenu.classList.remove('active');
+          
+          // Atualizar link ativo
+          document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+          });
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    // Script para atualizar link ativo durante a rolagem
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (window.pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+Esta página inicial (index.html) para o aplicativo Bem-Estar Infantil serve como ponto de entrada principal para os usuários, apresentando os principais recursos e benefícios do aplicativo. A página inclui:
+
+1. **Cabeçalho com navegação**: Menu de navegação fixo no topo com links para as principais seções da página e botões de login/cadastro.
+
+2. **Seção Hero**: Uma seção de destaque com uma imagem de fundo, título chamativo e botões de chamada para ação.
+
+3. **Recursos Principais**: Apresentação dos quatro principais recursos do aplicativo (monitoramento de saúde, controle de vacinas, nutrição e atividades físicas).
+
+4. **Como Funciona**: Explicação do processo de uso do aplicativo em três passos simples, acompanhada de capturas de tela.
+
+5. **Depoimentos**: Testemunhos de pais e profissionais de saúde que utilizam o aplicativo.
+
+6. **Chamada para Ação**: Seção incentivando o cadastro e download do aplicativo nas lojas de aplicativos.
+
+7. **Rodapé**: Informações de contato, links úteis e mídias sociais.
+
+A página mantém a mesma identidade visual do restante do aplicativo, com a paleta de cores em tons de azul (#87CEEB) sobre fundo escuro (#242424), e é totalmente responsiva para funcionar em diferentes dispositivos.
+
+<Actions>
+  <Action name="Adicionar seção de perguntas frequentes" description="Incluir uma seção de FAQ para esclarecer dúvidas comuns dos usuários" />
+  <Action name="Implementar vídeo demonstrativo" description="Adicionar um vídeo curto mostrando o funcionamento do aplicativo" />
+  <Action name="Criar seção de parceiros" description="Adicionar uma seção destacando parceiros e instituições que apoiam o aplicativo" />
+  <Action name="Implementar chat de suporte" description="Adicionar um chat flutuante para suporte ao usuário" />
+  <Action name="Adicionar blog integrado" description="Criar uma seção de blog com artigos sobre saúde infantil" />
+</Actions>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vacina Kids - Bem-Estar Infantil</title>
+  <style>
+    :root {
+      --primary-color: #87CEEB;
+      --background-color: #242424;
+      --text-color: #ffffff;
+      --accent-color: #6fff57;
+      --card-bg: #333333;
+      --border-radius: 10px;
+      --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .app-name {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .back-button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    /* Page Title */
+    .page-title {
+      color: var(--primary-color);
+      text-align: center;
+      margin: 30px 0;
+      font-size: 2rem;
+    }
+    
+    /* Child Selector */
+    .child-selector {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+    
+    .child-selector select {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 2px solid var(--primary-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+      cursor: pointer;
+      outline: none;
+      width: 300px;
+      text-align: center;
+    }
+    
+    /* Vaccine Calendar */
+    .vaccine-calendar {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      margin-bottom: 30px;
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .calendar-title {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+    }
+    
+    .calendar-filters {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .filter-btn {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .filter-btn.active {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+    }
+    
+    .vaccine-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .vaccine-table th, .vaccine-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #555;
+    }
+    
+    .vaccine-table th {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .vaccine-table tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .status-completed {
+      background-color: #4CAF50;
+      color: white;
+    }
+    
+    .status-pending {
+      background-color: #FFC107;
+      color: black;
+    }
+    
+    .status-overdue {
+      background-color: #F44336;
+      color: white;
+    }
+    
+    .status-scheduled {
+      background-color: #2196F3;
+      color: white;
+    }
+    
+    /* Upcoming Vaccines */
+    .upcoming-vaccines {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+      margin-bottom: 30px;
+    }
+    
+    .upcoming-title {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    
+    .vaccine-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .vaccine-card {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: var(--border-radius);
+      padding: 15px;
+      border-left: 4px solid var(--primary-color);
+    }
+    
+    .vaccine-card-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .vaccine-name {
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    
+    .vaccine-date {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    .vaccine-info {
+      color: var(--text-color);
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .vaccine-actions {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .btn-small {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+    
+    /* Vaccine Information */
+    .vaccine-info-section {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .info-title {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    
+    .info-accordion {
+      border: 1px solid #555;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    
+    .accordion-header {
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .accordion-title {
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    .accordion-content {
+      padding: 15px;
+      display: none;
+    }
+    
+    .accordion-content p {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    
+    .accordion-content ul {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .accordion-content li {
+      margin-bottom: 5px;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .vaccine-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .calendar-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .calendar-filters {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="imagem/logo.jpeg" alt="Logo do Bem-Estar Infantil" class="logo">
+      <div class="app-name">Bem-Estar Infantil</div>
+    </div>
+    <button class="back-button" onclick="window.location.href='index.html'">← Voltar</button>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">Vacina Kids</h1>
+    
+    <div class="child-selector">
+      <select id="childSelect">
+        <option value="1">Lucas Silva (5 anos)</option>
+        <option value="2">Maria Silva (3 anos)</option>
+      </select>
+    </div>
+    
+    <!-- Próximas Vacinas -->
+    <div class="upcoming-vaccines">
+      <h2 class="upcoming-title">Próximas Vacinas</h2>
+      
+      <div class="vaccine-cards">
+        <div class="vaccine-card">
+          <div class="vaccine-card-header">
+            <div class="vaccine-name">Reforço DTP</div>
+            <div class="vaccine-date">22/05/2025</div>
+          </div>
+          <div class="vaccine-info">
+            Reforço da vacina contra Difteria, Tétano e Coqueluche. Importante para manter a imunidade.
+          </div>
+          <div class="vaccine-actions">
+            <button class="btn btn-small">Agendar</button>
+            <button class="btn btn-small btn-secondary">Mais Informações</button>
+          </div>
+        </div>
+        
+        <div class="vaccine-card">
+          <div class="vaccine-card-header">
+            <div class="vaccine-name">Influenza (Gripe)</div>
+            <div class="vaccine-date">15/06/2025</div>
+          </div>
+          <div class="vaccine-info">
+            Vacina anual contra o vírus da gripe. Recomendada para todas as crianças acima de 6 meses.
+          </div>
+          <div class="vaccine-actions">
+            <button class="btn btn-small">Agendar</button>
+            <button class="btn btn-small btn-secondary">Mais Informações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Calendário de Vacinação -->
+    <div class="vaccine-calendar">
+      <div class="calendar-header">
+        <h2 class="calendar-title">Calendário de Vacinação</h2>
+        
+        <div class="calendar-filters">
+          <button class="filter-btn active">Todas</button>
+          <button class="filter-btn">Pendentes</button>
+          <button class="filter-btn">Concluídas</button>
+          <button class="filter-btn">Atrasadas</button>
+        </div>
+      </div>
+      
+      <table class="vaccine-table">
+        <thead>
+          <tr>
+            <th>Vacina</th>
+            <th>Idade Recomendada</th>
+            <th>Data Prevista</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BCG</td>
+            <td>Ao nascer</td>
+            <td>10/05/2020</td>
+            <td><span class="status-badge status-completed">Concluída</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+          <tr>
+            <td>Hepatite B - 1ª dose</td>
+            <td>Ao nascer</td>
+            <td>10/05/2020</td>
+            <td><span class="status-badge status-completed">Concluída</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+          <tr>
+            <td>Pentavalente - 1ª dose</td>
+            <td>2 meses</td>
+            <td>10/07/2020</td>
+            <td><span class="status-badge status-completed">Concluída</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+          <tr>
+            <td>Pneumocócica 10V - 1ª dose</td>
+            <td>2 meses</td>
+            <td>10/07/2020</td>
+            <td><span class="status-badge status-completed">Concluída</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+          <tr>
+            <td>Reforço DTP</td>
+            <td>5 anos</td>
+            <td>22/05/2025</td>
+            <td><span class="status-badge status-scheduled">Agendada</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+          <tr>
+            <td>Influenza (Gripe)</td>
+            <td>Anual</td>
+            <td>15/06/2025</td>
+            <td><span class="status-badge status-pending">Pendente</span></td>
+            <td><button class="btn btn-small">Detalhes</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Informações sobre Vacinas -->
+    <div class="vaccine-info-section">
+      <h2 class="info-title">Informações sobre Vacinas</h2>
+      
+      <div class="info-accordion">
+        <div class="accordion-header">
+          <div class="accordion-title">Por que vacinar é importante?</div>
+          <div class="accordion-icon">+</div>
+        </div>
+        <div class="accordion-content">
+          <p>A vacinação é uma das medidas de saúde pública mais eficazes para prevenir doenças. As vacinas ajudam a proteger as crianças contra doenças graves que podem causar complicações sérias e até mesmo a morte.</p>
+          <p>Além de proteger individualmente, a vacinação também contribui para a imunidade coletiva, protegendo aqueles que não podem ser vacinados por razões médicas.</p>
+        </div>
+      </div>
+      
+      <div class="info-accordion">
+        <div class="accordion-header">
+          <div class="accordion-title">Efeitos colaterais comuns</div>
+          <div class="accordion-icon">+</div>
+        </div>
+        <div class="accordion-content">
+          <p>A maioria das vacinas pode causar efeitos colaterais leves, que geralmente desaparecem em poucos dias:</p>
+          <ul>
+            <li>Dor, vermelhidão ou inchaço no local da injeção</li>
+            <li>Febre baixa</li>
+            <li>Irritabilidade ou choro</li>
+            <li>Sonolência ou cansaço</li>
+          </ul>
+          <p>Efeitos colaterais graves são extremamente raros. Se você notar qualquer reação incomum, consulte um médico imediatamente.</p>
+        </div>
+      </div>
+      
+      <div class="info-accordion">
+        <div class="accordion-header">
+          <div class="accordion-title">Mitos e verdades sobre vacinação</div>
+          <div class="accordion-icon">+</div>
+        </div>
+        <div class="accordion-content">
+          <p><strong>Mito:</strong> Vacinas causam autismo.</p>
+          <p><strong>Verdade:</strong> Numerosos estudos científicos comprovaram que não há relação entre vacinas e autismo.</p>
+          
+          <p><strong>Mito:</strong> É melhor adquirir imunidade através da doença natural.</p>
+          <p><strong>Verdade:</strong> Doenças naturais podem causar complicações graves e até morte. Vacinas oferecem proteção sem os riscos da doença.</p>
+          
+          <p><strong>Mito:</strong> Vacinas contêm ingredientes perigosos.</p>
+          <p><strong>Verdade:</strong> Os ingredientes das vacinas são rigorosamente testados e usados em quantidades seguras.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>© 2025 Bem-Estar Infantil • Cuidar e Crescer</p>
+  </footer>
+
+  <script>
+    // Script para manipulação dos acordeões
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.accordion-icon');
+        
+        if (content.style.display === 'block') {
+          content.style.display = 'none';
+          icon.textContent = '+';
+        } else {
+          content.style.display = 'block';
+          icon.textContent = '-';
+        }
+      });
+    });
+    
+    // Script para filtros do calendário
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Aqui seria implementada a lógica de filtragem da tabela
+      });
+    });
+  </script>
+</body>
+</html>
