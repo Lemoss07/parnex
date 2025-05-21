@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parnex</title>
+  <style>
+    :root {
+      --primary-color: #6db9d1;
+      --secondary-color: #6db9d1 ;
+      --accent-color: #6db9d1;
+      --background-color: #242424;
+      --card-bg: #242424;
+      --text-color: #ffffff;
+      --text-light: #ffffff;
+      --success-color: ##6db9d1;
+      --warning-color:#6db9d1 ;
+      --danger-color: #6db9d1;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    .logo-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #a5b4fc 0%, #6db9d1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    
+    /* Header */
+    header {
+      background-color: #242424;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .logo span {
+      color: var(--secondary-color);
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    
+    nav a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      transition: var(--transition);
+      padding: 5px 10px;
+      border-radius: var(--border-radius);
+    }
+    
+    nav a:hover, nav a.active {
+      color: var(--primary-color);
+    }
+    
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .search-bar {
+      position: relative;
+    }
+    
+    .search-bar input {
+      padding: 8px 15px 8px 35px;
+      border-radius: 20px;
+      outline: none;
+      transition: var(--transition);
+      width: 200px;
+    }
+    
+    .search-bar input:focus {
+      border-color: var(--primary-color);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+    
+    .user-profile {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(155, 154, 154);
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+    
+    .page-header {
+      margin-bottom: 30px;
+    }
+    
+    .page-title {
+      font-size: 32px;
+      color: var(--text-color);
+      margin-bottom: 10px;
+    }
+    
+    .page-description {
+      color: var(--text-light);
+      max-width: 700px;
+    }
+    
+    /* Filters */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+      align-items: center;
+    }
+    
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .filter-label {
+      font-weight: 500;
+      color: var(--text-light);
+    }
+    
+    .filter-options {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .filter-option {
+      padding: 6px 12px;
+      background-color: #696969;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+    }
+    
+    .filter-option:hover {
+      border-color: var(--primary-color);
+    }
+    
+    .filter-option.active {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    .sort-select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      outline: none;
+      background-color: white;
+      cursor: pointer;
+    }
+    
+    .sort-select:focus {
+      border-color: var(--primary-color);
+    }
+    
+    /* Course Grid */
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    
+    .course-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      transition: var(--transition);
+    }
+    
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .course-image {
+      height: 160px;
+      width: 100%;
+      object-fit: cover;
+    }
+    
+    .course-content {
+      padding: 20px;
+    }
+    
+    .course-tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .course-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .tag-beginner {
+      background-color: #6db9d1;
+      color: var(--success-color);
+    }
+    
+    .tag-intermediate {
+      background-color: #6db9d1;
+      color: var(--success-color);
+    }
+    
+    .tag-advanced {
+      background-color: rgba(231, 29, 54, 0.15);
+      color: var(--danger-color);
+    }
+    
+    .course-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+    
+    .course-description {
+      color: var(--text-light);
+      font-size: 14px;
+      margin-bottom: 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    
+    .course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+    
+    .course-rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--warning-color);
+    }
+    
+    .course-price {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .course-instructor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .instructor-avatar {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    
+    .instructor-name {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .btn:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+    
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 5px;
+    }
+    
+    .page-item {
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .page-item:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+    
+    .page-item.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #fff;
+      padding: 40px 20px;
+      margin-top: 60px;
+      border-top: 1px solid #eee;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+    
+    .footer-column h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: var(--text-color);
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      text-decoration: none;
+      color: var(--text-light);
+      transition: var(--transition);
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 20px;
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .copyright {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .social-link {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    
+    .social-link:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .search-bar input {
+        width: 150px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      
+      nav {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 80%;
+        height: calc(100vh - 70px);
+        background-color: white;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        z-index: 100;
+      }
+      
+      nav.active {
+        left: 0;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+      }
+      
+      .search-bar {
+        display: none;
+      }
+      
+      .filters {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+</style>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    
+      <div class="logo-text">
+        <div class="logo">Parnex</div>
+      </div>
+      
+      <nav id="mainNav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="cursos.html" class="active">Cursos</a></li>
+          <li><a href="#">Tutoriais</a></li>
+          <li><a href="#">Comunidade</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </nav>
+      
+      <div class="user-actions">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Buscar cursos...">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section class="page-header">
+      <h1 class="page-title">Cursos de Programação</h1>
+      <p class="page-description">Aprenda as habilidades mais demandadas do mercado com nossos cursos de programação. Do básico ao avançado, temos o curso perfeito para você.</p>
+    </section>
+    
+    <section class="course-grid">
+      <!-- Curso 1: HTML -->
+      <a href="cursor.html" style="text-decoration: none; color: inherit;">
+        <div class="parnex">
+          <img src="imagem/html.jpeg" alt="HTML e CSS" class="course-image">
+          <div class="course-content">
+            <div class="course-tags">
+              <span class="course-tag tag-beginner">Iniciante</span>
+              <span class="course-tag tag-beginner">Web</span>
+            </div>
+            <h3 class="course-title"> HTML e CSS</h3>
+            <p class="course-description">Aprenda a criar sites responsivos com HTML5 e CSS3. Este curso cobre todos os fundamentos para você começar no desenvolvimento web.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar">AM</div>
+              <span class="instructor-name">Ana Martins</span>
+            </div>
+            <div class="course-meta">
+              <div class="course-rating">
+                ★★★★★ <span>4.9</span>
+              </div>
+              <div class="course-price">R$ 89,90</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Curso 2: JavaScript -->
+      <a href="cursorjs.html" style="text-decoration: none; color: inherit;">
+        <div class="course-card">
+          <img src="imagem/java.jpeg" alt="JavaScript" class="course-image">
+          <div class="course-content">
+            <div class="course-tags">
+              <span class="course-tag tag-intermediate">Iniciante</span>
+              <span class="course-tag tag-beginner">Web</span>
+            </div>
+            <h3 class="course-title">JavaScript</h3>
+            <p class="course-description">Domine o JavaScript moderno e aprenda a criar aplicações web interativas. Inclui ES6+, manipulação do DOM e projetos práticos.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar">RS</div>
+              <span class="instructor-name">Rafael Santos</span>
+            </div>
+            <div class="course-meta">
+              <div class="course-rating">
+                ★★★★☆ <span>4.7</span>
+              </div>
+              <div class="course-price">R$ 129,90</div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Curso 3: Python -->
+      <a href="cursorpython.html" style="text-decoration: none; color: inherit;">
+        <div class="course-card">
+          <img src="imagem/python.jpeg" alt="python" class="course-image">
+          <div class="course-content">
+            <div class="course-tags">
+              <span class="course-tag tag-beginner">Iniciante</span>
+              <span class="course-tag tag-beginner">Dados</span>
+            </div>
+            <h3 class="course-title">Python</h3>
+            <p class="course-description">Comece sua jornada na programação com python. Aprenda sintaxe, estruturas de dados, funções e crie seus primeiros programas.</p>
+            <div class="course-instructor">
+              <div class="instructor-avatar">MF</div>
+              <span class="instructor-name">Marcos Ferreira</span>
+            </div>
+            <div class="course-meta">
+              <div class="course-rating">
+                ★★★★☆ <span>4.6</span>
+              </div>
+              <div class="course-price">R$ 79,90</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Parnex</h3>
+        <ul class="footer-links">
+          <li><a href="#">Sobre nós</a></li>
+          <li><a href="#">Carreiras</a></li>
+          <li><a href="#">Imprensa</a></li>
+          <li><a href="#">Afiliados</a></li>
+          <li><a href="#">Investidores</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+
+      </div>
+      
+      <div class="footer-column">
+        <h3>Cursos</h3>
+        <ul class="footer-links">
+          <li><a href="#">Desenvolvimento Web</a></li>
+          <li><a href="#">Desenvolvimento Mobile</a></li>
+          <li><a href="#">Ciência de Dados</a></li>
+          <li><a href="#">Inteligência Artificial</a></li>
+          <li><a href="#">DevOps</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Comunidade</h3>
+        <ul class="footer-links">
+          <li><a href="#">Fórum</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Eventos</a></li>
+          <li><a href="#">Hackathons</a></li>
+          <li><a href="#">Mentoria</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3>Suporte</h3>
+        <ul class="footer-links">
+          <li><a href="#">Ajuda</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    </div>
+  </footer>
+
+  <script>
+    // Menu Toggle para dispositivos móveis
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    
+    menuToggle.addEventListener('click', function() {
+      mainNav.classList.toggle('active');
+    });
+    
+    // Filtros
+    const filterOptions = document.querySelectorAll('.filter-option');
+    
+    filterOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove a classe active de todas as opções no mesmo grupo
+        const parentGroup = this.parentElement;
+        parentGroup.querySelectorAll('.filter-option').forEach(opt => {
+          opt.classList.remove('active');
+        });
+        
+        // Adiciona a classe active à opção clicada
+        this.classList.add('active');
+        
+        // Aqui você pode implementar a lógica de filtragem real
+        const filterType = this.getAttribute('data-filter');
+        console.log(`Filtro selecionado: ${filterType}`);
+        
+        // Simulação de filtragem (em uma aplicação real, você filtraria os cursos)
+        if (filterType !== 'all') {
+          alert(`Filtrando por: ${filterType}`);
+        }
+      });
+    });
+    
+    // Ordenação
+    const sortSelect = document.querySelector('.sort-select');
+    
+    sortSelect.addEventListener('change', function() {
+      const sortValue = this.value;
+      console.log(`Ordenando por: ${sortValue}`);
+      
+      // Simulação de ordenação (em uma aplicação real, você reordenaria os cursos)
+      alert(`Ordenando por: ${sortValue}`);
+    });
+    
+    // Paginação
+    const pageItems = document.querySelectorAll('.page-item');
+    
+    pageItems.forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove a classe active de todos os itens
+        pageItems.forEach(pi => pi.classList.remove('active'));
+        
+        // Adiciona a classe active ao item clicado
+        this.classList.add('active');
+        
+        // Simulação de paginação (em uma aplicação real, você carregaria a página correspondente)
+        const pageNumber = this.textContent;
+        if (pageNumber !== '→') {
+          console.log(`Navegando para a página ${pageNumber}`);
+        } else {
+          console.log('Próxima página');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
